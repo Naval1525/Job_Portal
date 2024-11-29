@@ -1,21 +1,16 @@
 import { useState } from "react";
 import Navbar from "./components/shared/Navbar";
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import Home from "./components/Home";
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <Home/>,
+    element: <Home />,
   },
   {
     path: "/login",
@@ -26,11 +21,13 @@ const appRouter = createBrowserRouter([
     element: <Signup />,
   },
 ]);
+
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
+      {/* Only use RouterProvider for routing */}
       <RouterProvider router={appRouter} />
     </>
   );
