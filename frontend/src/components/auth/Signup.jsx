@@ -7,8 +7,13 @@ import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import store from "@/redux/store";
 
 function Signup() {
+  const dispatch = useDispatch();
+  const { loading } = useSelector(store => store.auth);
   const [input, setInput] = useState({
     fullname: "",
     email: "",
@@ -69,6 +74,9 @@ function Signup() {
     } catch (err) {
       console.error(err.response);
       toast.error(err.response?.data?.message || "An error occurred");
+    }
+    finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -172,12 +180,19 @@ function Signup() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-black text-white py-2 rounded-md mt-4 my-4"
-            >
-              Sign Up
-            </button>
+            {loading ? (
+              <Button className="w-full my-4">
+                <Loader2 className="mr-2 h4 w-4 animate-spin"></Loader2>Please
+                wait{" "}
+              </Button>
+            ) : (
+              <button
+                type="submit"
+                className="w-full bg-black text-white py-2 rounded-md mt-4 my-4"
+              >
+                Signup
+              </button>
+            )}
 
             <div className="mt-3 gap-2">
               <span className="text-sm my-4">

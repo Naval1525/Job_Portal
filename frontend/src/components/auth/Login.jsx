@@ -7,9 +7,17 @@ import { toast } from "sonner";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import store from "@/redux/store";
+import { Loader2 } from "lucide-react";
+import { Button } from "../ui/button";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector(store => store.auth);
+
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -24,29 +32,33 @@ function Login() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
       });
-      if(res.data.status){
+      if (res.data.status) {
         navigate("/");
         toast.success(res.data.message);
       }
-
     } catch (err) {
       console.log(err);
       toast.error(err.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   return (
     <div>
       <Navbar />
       <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form className="w-1/2 border-2 border-gray-200 rounded-xl p-6 my-10 shadow-md" onSubmit={submitHandler}>
+        <form
+          className="w-1/2 border-2 border-gray-200 rounded-xl p-6 my-10 shadow-md"
+          onSubmit={submitHandler}
+        >
           <h2 className="font-bold text-2xl mb-6 text-center">Login</h2>
 
           <div className="space-y-4">
@@ -101,13 +113,20 @@ function Login() {
                 </div>
               </RadioGroup>
             </div>
+            {loading ? (
+              <Button className="w-full my-4">
+                <Loader2 className="mr-2 h4 w-4 animate-spin"></Loader2>Please
+                wait{" "}
+              </Button>
+            ) : (
+              <button
+                type="submit"
+                className="w-full bg-black text-white py-2 rounded-md mt-4 my-4"
+              >
+                Login
+              </button>
+            )}
 
-            <button
-              type="submit"
-              className="w-full bg-black text-white py-2 rounded-md mt-4 my-4"
-            >
-              Login
-            </button>
             <div className="mt-3">
               <span className="text-sm my-4">
                 Don't have an account?{" "}
