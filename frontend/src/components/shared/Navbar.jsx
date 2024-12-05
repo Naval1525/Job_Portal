@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { User, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Links } from "react-router-dom";
 
 const Navbar = () => {
   const user = false;
@@ -23,9 +23,15 @@ const Navbar = () => {
         <div className="flex items-center gap-8">
           <nav>
             <ul className="flex font-medium items-center gap-5">
-              <li className="hover:text-blue-700 cursor-pointer">Home</li>
-              <li className="hover:text-blue-700 cursor-pointer">Jobs</li>
-              <li className="hover:text-blue-700 cursor-pointer">Browse</li>
+              <li className="hover:text-blue-700 cursor-pointer">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="hover:text-blue-700 cursor-pointer">
+                <Link to="/jobs">Jobs</Link>
+              </li>
+              <li className="hover:text-blue-700 cursor-pointer">
+                <Link to="/browse">Browse</Link>
+              </li>
             </ul>
           </nav>
           {!user ? (
