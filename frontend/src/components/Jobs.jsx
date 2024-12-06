@@ -14,7 +14,7 @@ function Jobs() {
         <div className="flex gap-5">
           {/* FilterCard Section */}
           <div className="w-1/5">
-            <FilterCard />
+            <FilterCard/>
           </div>
 
           {/* Jobs Section */}

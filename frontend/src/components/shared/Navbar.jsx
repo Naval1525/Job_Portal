@@ -8,9 +8,11 @@ import {
 } from "@/components/ui/popover";
 import { User, LogOut } from "lucide-react";
 import { Link, Links } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const user = false;
+  // const user = false;
+const {user}= useSelector(store=>store.auth)
   return (
     <div className="bg-white ">
       <div className="flex items-center justify-between mx-auto h-16 w-3/4">
@@ -79,11 +81,17 @@ const Navbar = () => {
                     </div>
                   </div>
 
+
                   <div className="flex flex-col gap-2 pt-2 border-t">
+                  <Link to="/profile">
                     <Button variant="ghost" className="justify-start gap-2">
+
                       <User size={16} />
                       View Profile
+
                     </Button>
+                    </Link>
+
                     <Button
                       variant="ghost"
                       className="justify-start gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
