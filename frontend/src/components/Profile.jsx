@@ -82,11 +82,20 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import AppliedJobTable from "./AppliedJobTable";
+import { useState } from "react";
+import UpdateProfileDialog from "./UpdateProfileDialog";
+import { useSelector } from "react-redux";
+import store from "../redux/store";
 
-const skills = ["Html", "Css", "Javascript", "React", "MongoDb"];
+
+// const skills = ["Html", "Css", "Javascript", "React", "MongoDb"];
+const isResume = true;
 
 function Profile() {
-  const isResume = true;
+const {user} = useSelector(store=>store.auth);
+  const [open,setOpen]=useState(false);
+
+
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -109,17 +118,15 @@ function Profile() {
               <div className="flex-1 text-center md:text-left">
                 <div className="flex justify-between items-center">
                   <h1 className="text-2xl font-semibold text-gray-800">
-                    Naval Bihani
+                   {user?.fullname}
                   </h1>
-                  <Button variant="outline" className="hidden md:flex">
+                  <Button onClick={()=>setOpen(true)} variant="outline" className="hidden md:flex">
                     <Pen className="text-gray-600 hover:text-blue-600" />
                   </Button>
                 </div>
 
                 <p className="text-gray-600 mt-2 leading-relaxed">
-                  I, Naval Bihani, am a dedicated and forward-thinking Computer
-                  Science Engineering freshmen student with a deep passion for
-                  technology and its potential to shape the world around us.
+                {user?.profile?.bio}
                 </p>
               </div>
             </div>
@@ -128,11 +135,11 @@ function Profile() {
             <div className="mt-6 grid md:grid-cols-2 gap-4 border-t pt-4 border-gray-100">
               <div className="flex items-center gap-3">
                 <Mail className="text-blue-500 shrink-0" />
-                <span className="text-gray-700 truncate">naval@gmail.com</span>
+                <span className="text-gray-700 truncate">{user?.email}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Contact className="text-green-500 shrink-0" />
-                <span className="text-gray-700">9312832812</span>
+                <span className="text-gray-700">{user?.phoneNumber}</span>
               </div>
             </div>
 
@@ -142,8 +149,8 @@ function Profile() {
                 Skills
               </h2>
               <div className="flex flex-wrap gap-2">
-                {skills.length !== 0 ? (
-                  skills.map((item, index) => (
+                {user?.profile?.skills.length !== 0 ? (
+                  user?.profile?.skills.map((item, index) => (
                     <Badge
                       key={index}
                       className="bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
@@ -183,6 +190,7 @@ function Profile() {
             <AppliedJobTable />
           </div>
         </div>
+        <UpdateProfileDialog open = {open} setOpen={setOpen}></UpdateProfileDialog>
       </div>
     </div>
   );

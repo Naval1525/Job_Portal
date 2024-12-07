@@ -2,8 +2,11 @@ import { Bookmark } from "lucide-react";
 import { Button } from "./ui/button";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar } from "./ui/avatar";
+import { useNavigate } from "react-router-dom";
 
 function Job() {
+  const navigate = useNavigate();
+  const jobId = "ssddr32fwef";
   return (
     <div className="p-5 rounded-lg shadow-xl bg-white border-gray-100">
       <div className="flex items-center justify-between">
@@ -42,7 +45,7 @@ function Job() {
         </div>
       </div>
       <div className="flex space-x-2 mt-4">
-        <button className="px-3 py-1 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50 transition-colors ">
+        <button onClick={()=> navigate(`/description/${jobId}`)} className="px-3 py-1 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50 transition-colors ">
           Details
         </button>
         <button className="px-4 py-2 bg-black text-white rounded-2xl hover:bg-purple-900 transition-colors">

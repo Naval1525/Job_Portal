@@ -156,31 +156,20 @@ export const logout = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const { fullname, email, phoneNumber, bio, skills } = req.body;
-        const file = req.file; // If you're handling file upload
+        const { email, fullname, phoneNumber, bio, skills } = req.body;
 
-        // Validate input fields
-        if (!fullname || !email || !phoneNumber || !bio || !skills) {
+        // Validate input
+        if (!email) {
             return res.status(400).json({
-                error: "All fields are required",
-                status: false,
+                error: "Email is required",
+                status: false
             });
         }
 
-        // Split skills string into array
-        const skillsArray = skills.split(",").map(skill => skill.trim());
+        // Ensure skills is an array, defaulting to empty array if not provided
 
-        // Find user (using the authenticated user's ID from middleware)
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({
-                error: "User not found",
-                status: false,
-            });
-        }
 
-        // Update user profile
-        await User.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
             { email },
             {
                 fullname,
@@ -188,22 +177,46 @@ export const updateProfile = async (req, res) => {
                 phoneNumber,
                 profile: {
                     bio,
-                    skills: skillsArray,
+                    skills,
                 },
                 // If handling file upload, you'd add profile picture logic here
             },
-            { new: true } // Return the updated document
+            {
+                new: true,  // Return the updated document
+                runValidators: true  // Run model validation
+            }
         );
+
+        // Check if user was found and updated
+        if (!updatedUser) {
+            return res.status(404).json({
+                error: "User not found",
+                status: false
+            });
+        }
+
+        console.log('Updated User:', updatedUser);
 
         return res.status(200).json({
             message: "User updated successfully",
             status: true,
+            user: {
+                email: updatedUser.email,
+                fullname: updatedUser.fullname,
+                phoneNumber: updatedUser.phoneNumber,
+                profile: updatedUser.profile
+            }
         });
     } catch (err) {
         console.error('Profile update error:', err);
-        return res.status(500).json({
-            error: "Internal server error",
-            details: err.message,
-        });
+
+        // Handle specific MongoDB validation errors
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({
+                error: "Validation Error",
+                details: Object.values(err.errors).map(error => error.message),
+                status: false
+            });
+
     }
-};
+}};
