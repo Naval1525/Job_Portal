@@ -9,6 +9,7 @@ import {
 import isAuth from "../middleware/isauth.js";
 
 const router = express.Router();
+// router.post("/postJob", isAuth, postJob);
 router.post("/postJob", isAuth, postJob);
 router.get("/get", isAuth, getAllJobs);
 router.get("/getadminjobs", isAuth, getAdminJobs);

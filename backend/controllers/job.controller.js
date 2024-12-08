@@ -66,7 +66,7 @@ export const getAllJobs = async (req, res) => {
       ],
     };
     // const jobs = await Job.find(query);
-    const jobs = await Job.findOne(query)
+    const jobs = await Job.find(query)
       .populate({
         path: "company",
       })
@@ -93,10 +93,13 @@ export const getAllJobs = async (req, res) => {
 
 export const getJobById = async (req, res) => {
   try {
-    const  jobId  = req.params;
-    const job = await Job.findById(jobId);
+    const jobId = req.params.id;  // Correct way to get the ID from route params
+    const job = await Job.findById(jobId).populate({
+      path:"applications"
+
+  });
     if (!job) {
-      return res.status(400).json({
+      return res.status(404).json({  // Changed to 404 for "Not Found"
         error: "Job not found",
         status: false,
       });

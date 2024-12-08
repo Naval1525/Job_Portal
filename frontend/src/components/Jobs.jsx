@@ -1,10 +1,13 @@
+import { useSelector } from "react-redux";
 import FilterCard from "./FilterCard";
 import Job from "./Job";
 import Navbar from "./shared/Navbar";
-
-const jobArray = [1, 2, 3, 4, 5, 6, 7, 8];
+import useGetAllJobs from "@/hooks/useGetAllJobs";
 
 function Jobs() {
+  const { allJobs } = useSelector((store) => store.job); // Accessing the Redux store
+  const { error } = useGetAllJobs(); // Fetch jobs when component loads
+
   return (
     <div>
       {/* Navbar Component */}
@@ -14,18 +17,21 @@ function Jobs() {
         <div className="flex gap-5">
           {/* FilterCard Section */}
           <div className="w-1/5">
-            <FilterCard/>
+            <FilterCard></FilterCard>
+            {/* <FilterCard /> */}
           </div>
 
           {/* Jobs Section */}
           <div className="flex-1 h-[88vh] overflow-y-auto pb-5">
-            {jobArray.length <= 0 ? (
+            {error ? (
+              <span>Error: {error.message}</span>
+            ) : allJobs.length <= 0 ? (
               <span>Job Not Found</span>
             ) : (
               <div className="grid grid-cols-3 gap-4">
-                {jobArray.map((item, index) => (
-                  <div key={index}>
-                    <Job />
+                {allJobs.map((job) => (
+                  <div key={job?._id}>
+                    <Job job={job} />
                   </div>
                 ))}
               </div>

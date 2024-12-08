@@ -4,13 +4,28 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar } from "./ui/avatar";
 import { useNavigate } from "react-router-dom";
 
-function Job() {
+function Job({ job }) {
   const navigate = useNavigate();
-  const jobId = "ssddr32fwef";
+  // const jobId = "ssddr32fwef";
+  const daysAgoFunction = (mongodbTime) => {
+    const today = new Date();
+    const jobDate = new Date(mongodbTime);
+
+    // Normalize both dates to midnight to ignore the time part
+    today.setHours(0, 0, 0, 0);
+    jobDate.setHours(0, 0, 0, 0);
+
+    const diffTime = today - jobDate; // Time difference in milliseconds
+    const diffDays = diffTime / (1000 * 60 * 60 * 24); // Convert to days
+
+    return Math.floor(diffDays); // Return the number of days ago
+  };
+
+
   return (
     <div className="p-5 rounded-lg shadow-xl bg-white border-gray-100">
       <div className="flex items-center justify-between">
-        <p>2 Days ago</p>
+        <p>{daysAgoFunction(job?.createdAt)<=0? "Today" : `${daysAgoFunction(job?.createdAt)} days ago`} </p>
         <Button variant="outline" className="rounded-full" size="icon">
           <Bookmark></Bookmark>
         </Button>
@@ -22,30 +37,30 @@ function Job() {
           </Avatar>
         </Button>
         <div>
-          <h1 className="font-medium text-lg">Company Name</h1>
-          <p className="text-sm text-gray-500">India</p>
+          <h1 className="font-medium text-lg">{job?.companyName}</h1>
+          <p className="text-sm text-gray-500">{job?.location}</p>
         </div>
       </div>
       <div>
-        <h1 className="font-bold text-lg my-2">Job Title</h1>
-        <p className="text-sm text-gray-600">
-          hello guys paise chaiyeh to pehhle please susbs suuubs subscribe my
-          channel
-        </p>
+        <h1 className="font-bold text-lg my-2">{job?.title}</h1>
+        <p className="text-sm text-gray-600">{job?.description}</p>
       </div>
-      <div className="flex space-x-2 mt-4">
+      <div className="flex space-x-2 mt-2">
         <div className="bg-blue-50 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
-          12 Positions
+          {job?.position} Postion
         </div>
         <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
-          Part Time
+          {job?.jobType}
         </div>
         <div className="bg-purple-50 text-purple-800 px-3 py-1 rounded-full text-xs font-medium">
-          ₹24 LPA
+          {job?.salary}LPA
         </div>
       </div>
       <div className="flex space-x-2 mt-4">
-        <button onClick={()=> navigate(`/description/${jobId}`)} className="px-3 py-1 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50 transition-colors ">
+        <button
+          onClick={() => navigate(`/description/${job?._id}`)}
+          className="px-3 py-1 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50 transition-colors "
+        >
           Details
         </button>
         <button className="px-4 py-2 bg-black text-white rounded-2xl hover:bg-purple-900 transition-colors">

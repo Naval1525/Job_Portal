@@ -259,12 +259,16 @@ export const updateProfile = async (req, res) => {
       fullname,
       phoneNumber,
       profile: {
+        resume:user.profile.resume||"resume",
+        resumeOriginalName:user.profile.resumeOriginalName||"resume",
         bio: bio || user.profile.bio,
         skills: skillsArray.length > 0 ? skillsArray : user.profile.skills,
         // Retain the existing profile photo if no file is uploaded
         profilePhoto: user.profile.profilePhoto || null, // Retains the existing photo or null if none
+
       },
     };
+
 
     // Handle file upload
     let cloudResponse;
@@ -286,6 +290,7 @@ export const updateProfile = async (req, res) => {
         });
       }
     }
+
 
     // Update user document
    // Update user document

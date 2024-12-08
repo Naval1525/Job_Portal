@@ -243,9 +243,10 @@ const Navbar = () => {
                     </Avatar>
 
                     <div className="flex-1">
-                      <h4 className="font-medium">{user?.name || "User"}</h4>
+                      <h4 className="font-medium">{user?.fullname || "User"}</h4>
                       <p className="text-sm text-gray-500">
-                        Hello, welcome to Job Portal!
+                        <>{user?.profile?.bio||"Hello, welcome to Job Portal!"}</>
+
                       </p>
                     </div>
                   </div>
