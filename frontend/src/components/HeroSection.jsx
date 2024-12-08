@@ -10,7 +10,7 @@ function HeroSection() {
           No. 1 Job Hunt Website
         </span>
         <h1 className="text-5xl font-bold">Search,  Apply & <br></br> Get Your <span className="text-blue-700">Dream Job</span></h1>
-        <p className="">lena hai lai nhi toh muh mai deduga choco</p>
+        <p className="">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <div className="flex w-[40% shadow-lg border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
             <input type="text" placeholder="Find your dream jobs" className="outline-none border-none w-full">
 

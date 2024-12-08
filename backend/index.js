@@ -7,11 +7,14 @@ import userRoute from "./routes/user.route.js";
 import companyRoute from './routes/company.route.js';
 import jobRoute from './routes/job.route.js';
 import applicationRoute from './routes/application.route.js';
+import bodyParser from "body-parser";
 // Load environment variables
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+// app.use(bodyParser.json()); // Parse JSON
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS configuration
 const corsOptions = {

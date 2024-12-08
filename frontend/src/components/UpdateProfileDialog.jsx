@@ -19,7 +19,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     email: user?.email || "",
     phoneNumber: user?.phoneNumber || "",
     bio: user?.profile?.bio || "",
-    skills: user?.profile?.skills.map((skill) => skill) || "",
+    skills: user?.profile?.skills?.map((skill) => skill) || "",
     file: user?.profile?.resume || "",
   });
 
@@ -29,22 +29,28 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   };
 
   const fileChangeHandler = (e) => {
-
-    setInput({ ...input, resume: e.target.files[0] });
+    const file = e.target.files[0]; // Get the first selected file
+    setInput({
+      ...input,
+      file: file, // Update the file field in your state
+    });
   };
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // console.log(input);
+    console.log(input);
     const formData = new FormData();
     formData.append("fullname", input.fullname);
     formData.append("email", input.email);
     formData.append("phoneNumber", input.phoneNumber);
     formData.append("bio", input.bio);
-    const skillsArray = skillsInput.split(",").map(skill => skill.trim());
+
     formData.append("skills", input.skills);
+    console.log(input.file);
     if (input.file) {
       formData.append("file", input.file);
+
     }
 
     try {
@@ -57,6 +63,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
       });
       if (res.data.status) {
         console.log(res.data.user);
+        setLoading(false);
         dispatch(setUser(res.data.user));
         toast.success(res.data.message || "Operation was successful.");
       }
@@ -65,6 +72,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
       toast.error(error.response?.data?.message || "An error occurred");
     }
     setOpen(false);
+    setLoading(false);
     // console.log(input)
   };
 
@@ -183,6 +191,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                   type="file"
                   id="file"
                   name="file"
+                  // value={input.file}
                   accept=".pdf"
                   onChange={fileChangeHandler}
                   className="col-span-3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"

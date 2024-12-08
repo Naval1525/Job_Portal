@@ -94,6 +94,7 @@ const isResume = true;
 function Profile() {
 const {user} = useSelector(store=>store.auth);
   const [open,setOpen]=useState(false);
+  console.log(user);
 
 
 
@@ -107,7 +108,7 @@ const {user} = useSelector(store=>store.auth);
             <div className="flex flex-col md:flex-row items-center gap-6">
               <Avatar className="h-28 w-28 border-4 border-blue-50">
                 <AvatarImage
-                  src="https://github.com/shadcn.png"
+                  src={user?.profile?.profilePhoto}
                   alt="Profile Picture"
                 />
                 <AvatarFallback className="bg-blue-100 text-blue-600 font-bold">
@@ -149,8 +150,8 @@ const {user} = useSelector(store=>store.auth);
                 Skills
               </h2>
               <div className="flex flex-wrap gap-2">
-                {user?.profile?.skills.length !== 0 ? (
-                  user?.profile?.skills.map((item, index) => (
+                {user?.profile?.skills?.length !== 0 ? (
+                  user?.profile?.skills?.map((item, index) => (
                     <Badge
                       key={index}
                       className="bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
@@ -169,12 +170,13 @@ const {user} = useSelector(store=>store.auth);
               <Label className="text-md font-bold text-gray-800">Resume</Label>
               {isResume ? (
                 <a
-                  href="https://www.linkedin.com/in/navalbihani15/"
+                  href={user?.profile?.resume}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block mt-2 text-blue-600 hover:text-blue-800 hover:underline transition-colors"
                 >
-                  View LinkedIn Profile
+                  {user?.profile?.resumeOriginalName}
+
                 </a>
               ) : (
                 <span className="text-gray-500">No resume uploaded</span>

@@ -10,10 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import store from "@/redux/store";
+import { setLoading, setUser } from "@/redux/authSlice";
 
 function Signup() {
   const dispatch = useDispatch();
-  const { loading } = useSelector(store => store.auth);
+  const { user } = useSelector((store) => store.auth);
+  const { loading } = useSelector((store) => store.auth);
   const [input, setInput] = useState({
     fullname: "",
     email: "",
@@ -64,18 +66,22 @@ function Signup() {
       //   navigate("/login");
       //   toast.success(res.data.message);
       // }
-      if (res.data.status) {  // Check if the status is true
-        toast.success(res.data.message || "Operation was successful.");  // Show success message from server
-        navigate("/login");  // Navigate to the login page
-      } else {
-        toast.error(res.data.message || "Something went wrong. Please try again.");  // Handle failure
-      }
+      if (res.data.status) {
+        // Check if the status is true
+        toast.success(res.data.message || "Operation was successful."); // Show success message from server
 
+        dispatch(setUser(user));
+        console.log(user);
+        navigate("/login"); // Navigate to the login page
+      } else {
+        toast.error(
+          res.data.message || "Something went wrong. Please try again."
+        ); // Handle failure
+      }
     } catch (err) {
       console.error(err.response);
       toast.error(err.response?.data?.message || "An error occurred");
-    }
-    finally {
+    } finally {
       dispatch(setLoading(false));
     }
   };
