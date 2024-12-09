@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, Github, Linkedin, Twitter } from 'lucide-react';
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="mt-24 bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4 grid md:grid-cols-4 gap-8">
         <div>
           <h3 className="text-xl font-bold mb-4">JobConnect</h3>

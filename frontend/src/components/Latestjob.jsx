@@ -41,7 +41,7 @@ function Latestjob() {
 
 
   return (
-    <div className="max-w-7xl mx-auto my-20">
+    <div className="max-w-7xl mx-auto my-10">
       <h1 className="text-3xl font-bold">
         <span className="text-blue-700">Latest</span> Job Openings
       </h1>

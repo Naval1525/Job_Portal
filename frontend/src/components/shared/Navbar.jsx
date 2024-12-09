@@ -103,7 +103,6 @@
 //                     </div>
 //                   </div>
 
-
 //                   <div className="flex flex-col gap-2 pt-2 border-t">
 //                   <Link to="/profile">
 //                     <Button variant="ghost" className="justify-start gap-2">
@@ -156,7 +155,6 @@ const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
 
-
   // Ensure user is loaded from localStorage when the page is refreshed
   // useEffect(() => {
   //   const savedUser = JSON.parse(localStorage.getItem("user"));
@@ -194,15 +192,28 @@ const Navbar = () => {
         <div className="flex items-center gap-8">
           <nav>
             <ul className="flex font-medium items-center gap-5">
-              <li className="hover:text-blue-700 cursor-pointer">
-                <Link to="/">Home</Link>
-              </li>
-              <li className="hover:text-blue-700 cursor-pointer">
-                <Link to="/jobs">Jobs</Link>
-              </li>
-              <li className="hover:text-blue-700 cursor-pointer">
-                <Link to="/browse">Browse</Link>
-              </li>
+              {user && user.role === "recruiter" ? (
+                <>
+                  <li className="hover:text-blue-700 cursor-pointer">
+                    <Link to="/admin/compaanies">Companies</Link>
+                  </li>
+                  <li className="hover:text-blue-700 cursor-pointer">
+                    <Link to="/admin/jobs">Jobs</Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="hover:text-blue-700 cursor-pointer">
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li className="hover:text-blue-700 cursor-pointer">
+                    <Link to="/jobs">Jobs</Link>
+                  </li>
+                  <li className="hover:text-blue-700 cursor-pointer">
+                    <Link to="/browse">Browse</Link>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
           {!user ? (
@@ -243,15 +254,54 @@ const Navbar = () => {
                     </Avatar>
 
                     <div className="flex-1">
-                      <h4 className="font-medium">{user?.fullname || "User"}</h4>
+                      <h4 className="font-medium">
+                        {user?.fullname || "User"}
+                      </h4>
                       <p className="text-sm text-gray-500">
-                        <>{user?.profile?.bio||"Hello, welcome to Job Portal!"}</>
-
+                        <>
+                          {user?.profile?.bio ||
+                            "Hello, welcome to Job Portal!"}
+                        </>
                       </p>
                     </div>
                   </div>
+                  {user.role === "recruiter" ? (
+                    <>
+                      <Button
+                        onClick={logoutHandler}
+                        variant="ghost"
+                        className="justify-start gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <LogOut size={16} />
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex flex-col gap-2 pt-2 border-t">
+                        <Link to="/profile">
+                          <Button
+                            variant="ghost"
+                            className="justify-start gap-2"
+                          >
+                            <User size={16} />
+                            View Profile
+                          </Button>
+                        </Link>
 
-                  <div className="flex flex-col gap-2 pt-2 border-t">
+                        <Button
+                          onClick={logoutHandler}
+                          variant="ghost"
+                          className="justify-start gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <LogOut size={16} />
+                          Logout
+                        </Button>
+                      </div>
+                    </>
+                  )}
+
+                  {/* <div className="flex flex-col gap-2 pt-2 border-t">
                     <Link to="/profile">
                       <Button variant="ghost" className="justify-start gap-2">
                         <User size={16} />
@@ -267,7 +317,7 @@ const Navbar = () => {
                       <LogOut size={16} />
                       Logout
                     </Button>
-                  </div>
+                  </div> */}
                 </div>
               </PopoverContent>
             </Popover>
