@@ -246,17 +246,26 @@ export const getCompanyById = async (req, res) => {
 //         });
 //     }
 // };
-
 export const updateCompany = async (req, res) => {
     try {
         const { name, description, website, location } = req.body;
         const companyId = req.params.id;
-        const file = req.file;
-        const fileUri = getdataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        const file = req.file; // The file will be stored in memory as a buffer
+
+        if (!file) {
+            return res.status(400).json({
+                error: "File is required",
+                status: false,
+            });
+        }
+
+        // Get the data URI from the file buffer
+        const fileUri = getdataUri(file); // Ensure getdataUri is set up to handle buffer correctly
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+            resource_type: "auto", // Automatically detect file type (image, video, etc.)
+        });
+
         const logo = cloudResponse.secure_url;
-
-
 
         // Check if company exists
         const existingCompany = await Company.findById(companyId);
@@ -276,13 +285,9 @@ export const updateCompany = async (req, res) => {
             });
         }
 
-        const updateData = { name, description, website, location,logo};
+        const updateData = { name, description, website, location, logo };
 
-        const company = await Company.findByIdAndUpdate(
-            companyId,
-            updateData,
-            { new: true }
-        );
+        const company = await Company.findByIdAndUpdate(companyId, updateData, { new: true });
 
         return res.status(200).json({
             message: "Company updated successfully",

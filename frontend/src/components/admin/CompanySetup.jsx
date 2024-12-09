@@ -39,12 +39,37 @@ function CompanySetup() {
     });
   };
 
-  const changeFileHandler = (e) => {
-    setInput({
-      ...input,
-      file: e.target.files[0],
-    });
+//   const changeFileHandler = (e) => {
+//     setInput({
+//       ...input,
+//       file: e.target.files[0],
+//     });
+//   };
+const changeFileHandler = (e) => {
+    const file = e.target.files[0];
+    console.log(file); // Log the file for debugging
+    if (file) {
+      // Optional: Add file type and size validation
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Invalid file type. Please upload an image.");
+        return;
+      }
+
+      if (file.size > maxSize) {
+        toast.error("File is too large. Maximum size is 5MB.");
+        return;
+      }
+
+      setInput({
+        ...input,
+        file: file,
+      });
+    }
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!input.name.trim() || !input.description.trim()) {
@@ -61,16 +86,10 @@ function CompanySetup() {
     // Improved file handling
     if (input.file) {
       formData.append("file", input.file);
-    } else if (singleCompany?.logo) {
-      // If no new file is uploaded but an existing logo exists,
-      // you might want to handle this differently
-      // Option 1: Don't append anything
-      // Option 2: Send a flag to keep existing logo
-      formData.append("keepExistingLogo", "true");
     }
-
     try {
       setLoading(true);
+      console.log("aaaaa",param.id)
       const response = await axios.put(
         `${COMPANY_API_END_POINT}/update/${param.id}`,
         formData,
