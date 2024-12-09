@@ -98,9 +98,14 @@
 import React from 'react';
 import { Briefcase, MapPin, DollarSign, BookmarkIcon, ClockIcon } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import store from '@/redux/store';
+import { Avatar } from '@radix-ui/react-avatar';
+import { AvatarImage } from './ui/avatar';
 
 function Job({ job }) {
   const navigate = useNavigate();
+  const {company} = useSelector(store=>store.company);
 
   const daysAgoFunction = (mongodbTime) => {
     const today = new Date();
@@ -132,12 +137,17 @@ function Job({ job }) {
       {/* Company Logo Placeholder */}
       <div className="flex items-center mb-4 space-x-4">
         <div className="bg-blue-50 p-3 rounded-full">
-          <Briefcase className="w-8 h-8 text-blue-600" />
+          <Avatar className="">
+            <AvatarImage className="w-7" src={job?.company?.logo} alt={company?.name} />
+
+
+          </Avatar>
+
         </div>
         <div className="flex-1">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold text-gray-800">
-              {job?.companyName || 'Company Name'}
+              {job?.company?.name || 'Company Name'}
             </h2>
             <div className=''>
             {daysAgo !== null && (
@@ -148,7 +158,7 @@ function Job({ job }) {
             )}
             </div>
           </div>
-          <p className="text-gray-500 text-sm">Software Company</p>
+          <p className="text-gray-500 text-sm">{job?.company?.description||"Software Company"}</p>
         </div>
       </div>
 

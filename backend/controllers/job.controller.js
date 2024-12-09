@@ -9,10 +9,17 @@ export const postJob = async (req, res) => {
       jobType,
       position,
       experience,
-      companyId,
+      company, // Check if this matches with frontend input
       salary,
     } = req.body;
+
+    const companyId = company || req.body.companyId;
+
+    console.log("Request Body:", req.body); // Log the entire request body to check all fields
+
     const userId = req.id;
+
+    // Check for missing fields
     if (
       !title ||
       !description ||
@@ -21,14 +28,27 @@ export const postJob = async (req, res) => {
       !jobType ||
       !position ||
       !experience ||
-      !companyId ||
+      !companyId || // Ensure companyId is present
       !salary
     ) {
+      console.log("Missing fields:", {
+        title,
+        description,
+        requirements,
+        location,
+        jobType,
+        position,
+        experience,
+        companyId, // Check for this missing field
+        salary
+      });
+
       return res.status(400).json({
         error: "All fields are required",
         status: false,
       });
     }
+
     const job = new Job({
       title,
       description,
@@ -37,10 +57,11 @@ export const postJob = async (req, res) => {
       jobType,
       position,
       experience,
-      company: companyId,
+      company: companyId, // Ensure this is being mapped correctly
       salary: Number(salary),
       created_by: userId,
     });
+
     await job.save();
     return res.status(201).json({
       message: "Job posted successfully",
@@ -121,7 +142,11 @@ export const getJobById = async (req, res) => {
 export const getAdminJobs = async (req, res) => {
   try {
     const adminId = req.id;
-    const jobs = await Job.find({ created_by: adminId });
+    const jobs = await Job.find({ created_by: adminId })
+      .populate({
+        path: "company",
+        createdAt:-1,
+      });
     if (!jobs) {
       return res.status(400).json({
         error: "Jobs not found",

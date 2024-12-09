@@ -320,7 +320,7 @@ function JobDescription() {
               <div className="flex items-center gap-3">
                 <Briefcase className="w-5 h-5 text-purple-600" />
                 <span className="text-gray-700">
-                  <strong>Experience:</strong> {singleJob?.experience}
+                  <strong>Experience:</strong> {singleJob?.experience} Yrs
                 </span>
               </div>
               <div className="flex items-center gap-3">

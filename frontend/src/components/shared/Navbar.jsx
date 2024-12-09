@@ -195,7 +195,7 @@ const Navbar = () => {
               {user && user.role === "recruiter" ? (
                 <>
                   <li className="hover:text-blue-700 cursor-pointer">
-                    <Link to="/admin/compaanies">Companies</Link>
+                    <Link to="/admin/companies">Companies</Link>
                   </li>
                   <li className="hover:text-blue-700 cursor-pointer">
                     <Link to="/admin/jobs">Jobs</Link>
