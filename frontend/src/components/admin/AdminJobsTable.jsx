@@ -91,7 +91,7 @@ function AdminJobsTable() {
                           <span className="text-sm">Edit</span>
                         </div>
                         <div
-                          onClick={() => navigate(`/admin/jobs/${job._id}`)}
+                          onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
                           className="flex items-center gap-2 py-2 cursor-pointer hover:underline"
                         >
                           <Eye className="w-4" />
