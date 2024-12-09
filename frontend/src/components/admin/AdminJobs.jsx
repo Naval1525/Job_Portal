@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import CompaniesTable from "./CompaniesTable";
 
-function Companies() {
+function AdminJobs() {
   const navigate = useNavigate();
   return (
     <div>
@@ -15,7 +15,7 @@ function Companies() {
             className="bg-black text-white rounded-xl hover:bg-black "
             onClick={() => navigate("/admin/companies/create")}
           >
-            New Company
+            Post New Jobs
           </Button>
           {/* <Input
             className="w-fit rounded-xl"
@@ -27,4 +27,4 @@ function Companies() {
     </div>
   );
 }
-export default Companies;
+export default AdminJobs;

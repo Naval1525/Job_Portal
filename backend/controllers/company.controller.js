@@ -107,6 +107,9 @@
 //   }
 // };
 import { Company } from "../models/company.model.js";
+import getdataUri from '../utils/datauri.js';
+import cloudinary from "../utils/cloudinary.js";
+import mongoose from "mongoose";
 
 export const registerCompany = async (req, res) => {
     try {
@@ -160,6 +163,7 @@ export const getCompany = async (req, res) => {
             });
         }
 
+
         return res.status(200).json({
             status: true,
             companies,
@@ -172,36 +176,87 @@ export const getCompany = async (req, res) => {
         });
     }
 };
-
+// In your company controller
 export const getCompanyById = async (req, res) => {
     try {
-        const companyId = req.params.id;
-        const company = await Company.findById(companyId);
 
-        if (!company) {
-            return res.status(404).json({
-                error: "Company not found",
+        const { id } = req.params;
+        console.log(id);
+
+        // Validation check for ID
+        if (!id || id === 'undefined') {
+            return res.status(400).json({
                 status: false,
+                message: "Invalid company ID provided"
             });
         }
 
-        return res.status(200).json({
+        // Validate ID format before querying
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                status: false,
+                message: "Invalid company ID format"
+            });
+        }
+
+        const company = await Company.findById(id);
+
+        if (!company) {
+            return res.status(404).json({
+                status: false,
+                message: "Company not found"
+            });
+        }
+
+        res.status(200).json({
             status: true,
-            company,
+            data: company
         });
-    } catch (err) {
-        console.error("Get company error:", err);
-        return res.status(500).json({
-            error: "Internal server error",
-            details: err.message,
+    } catch (error) {
+        console.error("Get Company By ID Error:", error);
+        res.status(500).json({
+            status: false,
+            message: "Internal server error",
+            error: error.message
         });
     }
 };
+// export const getCompanyById = async (req, res) => {
+//     try {
+//         const companyId = req.params.id;
+
+//         const company = await Company.findById(companyId);
+
+//         if (!company) {
+//             return res.status(404).json({
+//                 error: "Company not found",
+//                 status: false,
+//             });
+//         }
+
+//         return res.status(200).json({
+//             status: true,
+//             company,
+//         });
+//     } catch (err) {
+//         console.error("Get company error:", err);
+//         return res.status(500).json({
+//             error: "Internal server error",
+//             details: err.message,
+//         });
+//     }
+// };
 
 export const updateCompany = async (req, res) => {
     try {
         const { name, description, website, location } = req.body;
         const companyId = req.params.id;
+        const file = req.file;
+        const fileUri = getdataUri(file);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        const logo = cloudResponse.secure_url;
+
+
 
         // Check if company exists
         const existingCompany = await Company.findById(companyId);
@@ -221,7 +276,7 @@ export const updateCompany = async (req, res) => {
             });
         }
 
-        const updateData = { name, description, website, location };
+        const updateData = { name, description, website, location,logo};
 
         const company = await Company.findByIdAndUpdate(
             companyId,
