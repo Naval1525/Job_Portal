@@ -11,9 +11,31 @@ import {
 } from "../ui/table";
 import { useSelector } from "react-redux";
 import store from "@/redux/store";
+import axios from "axios";
+import { APPLICATION_API_END_POINT } from "@/utils/constant";
+import { toast } from "sonner";
 const shortlistingStatus = ["Accepted", "Rejected"];
 function ApplicantsTable() {
   const { applicants } = useSelector((store) => store.application);
+  const statusHandler = async (status,id) => {
+    try {
+        axios.defaults.withCredentials == true;
+      const res = await axios.post(
+        `${APPLICATION_API_END_POINT}/status/${id}/update`,
+        { status }
+        ,
+        { withCredentials: true }
+
+      );
+      if (res.data.status) {
+        console.log(res.data.application);
+        toast.success("Status Updated");
+        // dispatch(updateApplicantStatus(res.data.application));
+      }
+    } catch (err) {
+      console.error("Error updating status:", err);
+    }
+  };
 
   return (
     <div>
@@ -37,7 +59,13 @@ function ApplicantsTable() {
                 <TableCell>{item?.applicant?.email}</TableCell>
                 <TableCell>{item?.applicant?.phoneNumber}</TableCell>
                 <TableCell>
-                  {item?.applicant?.profile?.resumeOriginalName}
+                  <a
+                    className="text-blue-500 underline"
+                    href={item?.applicant?.profile?.resume}
+                    target="_blank"
+                  >
+                    {item?.applicant?.profile?.resumeOriginalName}
+                  </a>
                 </TableCell>
                 <TableCell>{item?.createdAt.split("T")[0]}</TableCell>
                 {/* <TableCell>{item?.status}</TableCell> */}
@@ -48,7 +76,7 @@ function ApplicantsTable() {
                     </PopoverTrigger>
                     <PopoverContent className="w-32 cursor-pointer">
                       {shortlistingStatus.map((status, index) => (
-                        <div className="mb-2" key={index}>
+                        <div onClick={()=>statusHandler(status,item?._id)} className="mb-2" key={index}>
                           <span>{status}</span>
                         </div>
                       ))}
