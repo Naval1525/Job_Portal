@@ -1,9 +1,22 @@
 import React, { useState, useRef } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setSearchQuery } from '@/redux/jobSlice';
 
 function CategoryCarousel() {
   const [currentScroll, setCurrentScroll] = useState(0);
   const containerRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleSearch = (query) => {
+    dispatch(setSearchQuery(query));
+    navigate("/browse");
+
+    // Placeholder for search functionality
+
+    console.log("Searching for:", query);
+  };
 
   const categories = [
     "Software Developer", "Data Scientist", "Cloud Architect", "Cybersecurity Analyst",
@@ -62,7 +75,7 @@ function CategoryCarousel() {
         "
       >
         {categories.map((name, index) => (
-          <button
+          <button onClick={()=>handleSearch(name)}
             key={index}
             className="
               px-4

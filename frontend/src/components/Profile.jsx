@@ -86,12 +86,14 @@ import { useState } from "react";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
 import store from "../redux/store";
+import UseGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 
 
 // const skills = ["Html", "Css", "Javascript", "React", "MongoDb"];
 const isResume = true;
 
 function Profile() {
+  UseGetAppliedJobs();
 const {user} = useSelector(store=>store.auth);
   const [open,setOpen]=useState(false);
   console.log(user);

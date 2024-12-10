@@ -28,20 +28,30 @@ const jobSlice = createSlice({
     singleJob: null,
 
     allAdminJobs: [],
+    allAppliedJobs: [],
+    searchQuery: "",
+    jobFilters: {
+      location: '',
+      industry: '',
+      salary: ''
+    }
   },
   reducers: {
     setAllJobs: (state, action) => {
-      // Handle different possible response structures
-      if (action.payload.status && action.payload.jobs) {
-        // If the response has a status and jobs property
-        state.allJobs = action.payload.jobs._id
-          ? [action.payload.jobs] // Single job object
-          : action.payload.jobs; // Potentially an array
-      } else if (Array.isArray(action.payload)) {
+      // If the payload is an array, use it directly
+      if (Array.isArray(action.payload)) {
         state.allJobs = action.payload;
-      } else if (action.payload._id) {
+      }
+      // If payload has a jobs property that is an array
+      else if (action.payload.jobs && Array.isArray(action.payload.jobs)) {
+        state.allJobs = action.payload.jobs;
+      }
+      // If payload is a single job object
+      else if (action.payload._id) {
         state.allJobs = [action.payload];
-      } else {
+      }
+      // Default to an empty array
+      else {
         state.allJobs = [];
       }
     },
@@ -51,8 +61,24 @@ const jobSlice = createSlice({
     setAllAdminjobs: (state, action) => {
       state.allAdminJobs = action.payload;
     },
+    setAllAppliedjobs: (state, action) => {
+      state.allAppliedJobs = action.payload;
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+    },
+    setJobFilters: (state, action) => {
+      state.jobFilters = action.payload;
+    },
   },
 });
 
-export const { setAllJobs, setSingleJob,setAllAdminjobs } = jobSlice.actions;
+export const {
+  setAllJobs,
+  setSingleJob,
+  setAllAdminjobs,
+  setAllAppliedJobs,
+  setSearchQuery,
+  setJobFilters
+} = jobSlice.actions;
 export default jobSlice.reducer;

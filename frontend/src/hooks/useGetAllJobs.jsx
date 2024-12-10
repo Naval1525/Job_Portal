@@ -1,43 +1,40 @@
-import { setLoading } from "@/redux/authSlice";
 import { setAllJobs } from "@/redux/jobSlice";
+import store from "@/redux/store";
 import { JOB_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 
 function useGetAllJobs() {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const { searchQuery } = useSelector(store => store.job);
 
   useEffect(() => {
     const fetchAllJobs = async () => {
-      dispatch(setLoading(true)); // Dispatching the Redux action to set loading state
+
       try {
-        const res = await axios.get(`${JOB_API_END_POINT}/get`, {
+        // Use an empty string as default if no search query
+        const queryParam = searchQuery ? `?keyword=${searchQuery}` : '';
+        const res = await axios.get(`${JOB_API_END_POINT}/get${queryParam}`, {
           withCredentials: true,
         });
-        console.log("Full API Response:", res);
-        console.log("Response Data:", res.data);
-        console.log("Jobs in Response:", res.data.jobs);
 
-        if (res.data.status) {
-          dispatch(setAllJobs(res.data.jobs)); // Update Redux state with fetched jobs
-          setError(null); // Clear any previous errors
-        } else {
-          setError(new Error("Failed to fetch jobs. Status not true."));
-        }
+        dispatch(setAllJobs(res.data));
       } catch (err) {
         console.error("Error fetching jobs:", err);
         setError(err);
       } finally {
-        dispatch(setLoading(false)); // Dispatching the Redux action to unset loading state
+
       }
     };
 
+    // Only fetch if there's a query or you want to show all jobs initially
     fetchAllJobs();
-  }, [dispatch]); // `dispatch` is a stable reference, safe to include in dependencies.
+  }, [dispatch, searchQuery]);
 
-  return { error }; // Return error so consuming components can use it
+  return { error };
 }
 
 export default useGetAllJobs;
