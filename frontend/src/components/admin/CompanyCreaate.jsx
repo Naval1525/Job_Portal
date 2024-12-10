@@ -28,7 +28,7 @@ function CompanyCreate() {
       if (res?.data?.status) {
         dispatch(setSingleCompany(res.data.company));
         const companyId = res?.data?.company?._id;
-        console.log(companyId);
+
         toast.success(res.data.message)||"Company Created Successfully";
         // Navigate to company list page after successful registration
         navigate(`/admin/companies/${companyId}`);

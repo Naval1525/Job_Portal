@@ -13,12 +13,9 @@ function useGetAdminAllJobs() {
     const fetchAllAdminJobs = async () => {
       dispatch(setLoading(true)); // Dispatching the Redux action to set loading state
       try {
-        const res = await axios.get(`${JOB_API_END_POINT}/getadminjobs`, {
+        const res = await axios.get(`${JOB_API_END_POINT}/getadminjobs?timestamp=${new Date().getTime()}`, {
           withCredentials: true,
         });
-        console.log("Full API Response:", res);
-        console.log("Response Data:", res.data);
-        console.log("adminaobs in Response:", res.data.jobs);
 
         if (res.data.status) {
           dispatch(setAllAdminjobs(res.data.jobs)); // Update Redux state with fetched jobs

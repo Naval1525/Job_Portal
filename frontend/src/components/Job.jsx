@@ -104,7 +104,7 @@ import { Avatar } from '@radix-ui/react-avatar';
 import { AvatarImage } from './ui/avatar';
 
 function Job({ job }) {
-  console.log(job);
+
   const navigate = useNavigate();
   const {company} = useSelector(store=>store.company);
 

@@ -66,7 +66,7 @@ function Signup() {
         },
         withCredentials: true,
       });
-      console.log(res.data);
+
 
       // if (res.data.status) {
       //   navigate("/login");
@@ -77,7 +77,7 @@ function Signup() {
         toast.success(res.data.message || "Operation was successful."); // Show success message from server
 
         dispatch(setUser(user));
-        console.log(user);
+
         navigate("/login"); // Navigate to the login page
       } else {
         toast.error(

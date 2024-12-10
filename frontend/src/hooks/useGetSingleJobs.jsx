@@ -16,9 +16,7 @@ function useGetSingleJob({jobId}) {
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
           withCredentials: true,
         });
-        console.log("Full API Response:", res);
-        console.log("Response Data:", res.data);
-        console.log("Jobs in Response:", res.data.jobs);
+
 
         if (res.data.status) {
           dispatch(setSingleJob(res.data)); // Update Redux state with fetched jobs

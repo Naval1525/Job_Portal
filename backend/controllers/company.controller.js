@@ -181,7 +181,7 @@ export const getCompanyById = async (req, res) => {
     try {
 
         const { id } = req.params;
-        console.log(id);
+
 
         // Validation check for ID
         if (!id || id === 'undefined') {

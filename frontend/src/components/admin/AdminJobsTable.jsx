@@ -70,7 +70,7 @@ function AdminJobsTable() {
               </TableCell>
             </TableRow>
           ) : (
-            filterJobs.map((job) => (
+            filterJobs?.map((job) => (
               <TableRow key={job._id}>
                 <TableCell>{job?.company?.name || "N/A"}</TableCell>
                 <TableCell>{job?.title || "N/A"}</TableCell>

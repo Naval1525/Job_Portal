@@ -22,12 +22,9 @@ import LatestjobCards from "./LatestjobCards";
 
 function Latestjob() {
   const { allJobs } = useSelector(store => store.job);
-  console.log(allJobs)
+
 
   // Detailed logging to understand the data
-  console.log('Raw allJobs:', allJobs);
-  console.log('Type of allJobs:', typeof allJobs);
-  console.log('Is Array:', Array.isArray(allJobs));
 
   // More defensive rendering
   // const jobsToDisplay = Array.isArray(allJobs) ? allJobs.slice(0, 6) :

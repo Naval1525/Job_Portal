@@ -97,7 +97,7 @@ export const getAppliedJobs = async (req, res) => {
 export const getApplicants = async (req, res) => {
   try {
     const jobId = req.params.id; // Access the jobId from the route parameter
-    console.log('Job ID:', jobId); // This should log the correct jobId
+
 
     // Check if the jobId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(jobId)) {

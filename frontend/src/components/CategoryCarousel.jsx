@@ -15,7 +15,7 @@ function CategoryCarousel() {
 
     // Placeholder for search functionality
 
-    console.log("Searching for:", query);
+
   };
 
   const categories = [

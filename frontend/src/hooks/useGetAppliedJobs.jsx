@@ -14,11 +14,10 @@ const UseGetAppliedJobs = () => {
 
           { withCredentials: true }
         );
-        console.log(res);
-        console.log(res.data);
+
         if(res.data.status){
 
-        dispatch(setAllAppliedJobs(res?.data?.application));
+        dispatch(setAllAppliedJobs(res.data.application));
         }
       } catch (err) {
         console.log(err);

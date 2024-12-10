@@ -207,8 +207,7 @@ function JobDescription() {
           withCredentials: true,
         }
       );
-      console.log(res.data);
-      console.log("Apply Job Response:", res);
+
       if (res.data.status) {
         toast.success(res.data.messaage||"Applied Successfully");
         setIsApplied(true);

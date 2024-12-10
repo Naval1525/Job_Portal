@@ -73,7 +73,7 @@ function PostJob() {
       });
 
       if (response.status) {
-        console.log("Job posted successfully:", response.data);
+
         navigate("/admin/companies");
         toast.success("Job posted successfully!");
       }

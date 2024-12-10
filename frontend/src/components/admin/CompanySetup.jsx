@@ -14,14 +14,14 @@ import useGetCompanyById from "@/hooks/useGetCompanyById";
 function CompanySetup() {
     const { singleCompany } = useSelector(store => store.company);
   const param = useParams();
-  console.log(param.id);
+
 
   useGetCompanyById(param.id);
-  console.log(param.id);
+
   const navigate = useNavigate();
 
 
-  console.log("hello",singleCompany);
+
 
   const [input, setInput] = useState({
     name: "",
@@ -47,7 +47,7 @@ function CompanySetup() {
 //   };
 const changeFileHandler = (e) => {
     const file = e.target.files[0];
-    console.log(file); // Log the file for debugging
+
     if (file) {
       // Optional: Add file type and size validation
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -89,7 +89,7 @@ const changeFileHandler = (e) => {
     }
     try {
       setLoading(true);
-      console.log("aaaaa",param.id)
+
       const response = await axios.put(
         `${COMPANY_API_END_POINT}/update/${param.id}`,
         formData,

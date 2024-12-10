@@ -15,7 +15,7 @@ export const postJob = async (req, res) => {
 
     const companyId = company || req.body.companyId;
 
-    console.log("Request Body:", req.body); // Log the entire request body to check all fields
+
 
     const userId = req.id;
 
@@ -31,17 +31,7 @@ export const postJob = async (req, res) => {
       !companyId || // Ensure companyId is present
       !salary
     ) {
-      console.log("Missing fields:", {
-        title,
-        description,
-        requirements,
-        location,
-        jobType,
-        position,
-        experience,
-        companyId, // Check for this missing field
-        salary
-      });
+
 
       return res.status(400).json({
         error: "All fields are required",

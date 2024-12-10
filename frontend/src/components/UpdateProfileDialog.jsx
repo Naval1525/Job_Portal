@@ -39,7 +39,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
+
     const formData = new FormData();
     formData.append("fullname", input.fullname);
     formData.append("email", input.email);
@@ -47,7 +47,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     formData.append("bio", input.bio);
 
     formData.append("skills", input.skills);
-    console.log(input.file);
+
     if (input.file) {
       formData.append("file", input.file);
 
@@ -62,7 +62,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         withCredentials: true,
       });
       if (res.data.status) {
-        console.log(res.data.user);
+
         setLoading(false);
         dispatch(setUser(res.data.user));
         toast.success(res.data.message || "Operation was successful.");
@@ -73,7 +73,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     }
     setOpen(false);
     setLoading(false);
-    // console.log(input)
+
   };
 
   return (

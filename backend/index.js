@@ -8,6 +8,7 @@ import companyRoute from './routes/company.route.js';
 import jobRoute from './routes/job.route.js';
 import applicationRoute from './routes/application.route.js';
 import bodyParser from "body-parser";
+import path from 'path'
 // Load environment variables
 dotenv.config();
 
@@ -15,6 +16,8 @@ const app = express();
 const port = process.env.PORT || 3001;
 // app.use(bodyParser.json()); // Parse JSON
 // app.use(bodyParser.urlencoded({ extended: true }));
+const _dirname = path.resolve();
+console.log(_dirname);
 
 // CORS configuration
 const corsOptions = {
@@ -23,6 +26,7 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
+
 
 // Middleware
 app.use(cors(corsOptions));
@@ -37,10 +41,12 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use("/api/v1/user", userRoute);
-
 app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job",jobRoute);
 app.use("/api/v1/application",applicationRoute);
+
+
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -52,6 +58,10 @@ app.use((err, req, res, next) => {
     });
 });
 
+app.use(express.static(path.join(_dirname, "/frontend/dist")));
+app.get("*", (_,res) => {
+    res.sendFile(path.resolve(_dirname, "frontend/dist/index.html"));
+});
 // Handle 404 routes
 app.use((req, res) => {
     res.status(404).json({
@@ -73,5 +83,6 @@ const startServer = async () => {
         process.exit(1);
     }
 };
+
 
 startServer();

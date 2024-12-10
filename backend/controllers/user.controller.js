@@ -312,7 +312,6 @@ const updatedUser = await User.findOneAndUpdate(
       });
     }
 
-    console.log("Updated User:", updatedUser);
 
     // Return updated user details
     console.log(user);

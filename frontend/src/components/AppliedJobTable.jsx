@@ -57,6 +57,7 @@ function AppliedJobTable() {
         );
 
         if (res.data.status) {
+
           const jobs = res?.data?.applications?.map((application) => ({
             id: application?._id, // Add unique key
             date: new Date(application?.createdAt).toLocaleDateString(),

@@ -17,9 +17,7 @@ function useGetAllCompany() {
         const res = await axios.get(`${COMPANY_API_END_POINT}/get`, {
           withCredentials: true,
         });
-        console.log("Full API Response:", res);
-        console.log("Response Data:", res.data);
-        console.log("Jobs in Response:", res.data.companies);
+
 
         if (res.data.status) {
           dispatch(setAllCompanies(res.data.companies)); // Update Redux state with fetched jobs
