@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -14,8 +14,15 @@ import { setLoading, setUser } from "@/redux/authSlice";
 
 function Signup() {
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
   const { user } = useSelector((store) => store.auth);
   const { loading } = useSelector((store) => store.auth);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
   const [input, setInput] = useState({
     fullname: "",
     email: "",
@@ -25,7 +32,6 @@ function Signup() {
     file: null,
   });
 
-  const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
     setInput({
