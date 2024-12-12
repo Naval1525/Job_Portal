@@ -223,12 +223,12 @@ const Navbar = () => {
                   variant="solid"
                   className="bg-blue-700 text-white hover:bg-blue-900 "
                 >
-                  Login
+                  Recruiter
                 </Button>
               </Link>
               <Link to="/signup">
                 <Button variant="outline" className="text-blue-700">
-                  Signup
+                  Candidate
                 </Button>
               </Link>
             </>
